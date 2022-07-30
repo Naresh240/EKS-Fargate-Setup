@@ -22,6 +22,14 @@ eksctl create iamserviceaccount \
     --approve	
 ```
 
+## Build and Push Image to ECR
+```bash
+docker pull nginx
+# Login to ECR
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 179746471541.dkr.ecr.us-east-1.amazonaws.com
+docker tag nginx:latest 179746471541.dkr.ecr.us-east-1.amazonaws.com/nginx:latest
+docker push 179746471541.dkr.ecr.us-east-1.amazonaws.com/nginx:latest
+```
 ## Deploy application with below
 ```bash
 cat << EOF > deployment.yaml
@@ -44,7 +52,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: 179746471541.dkr.ecr.us-east-1.amazonaws.com/nginx:latest
         ports:
         - containerPort: 80
 EOF       
